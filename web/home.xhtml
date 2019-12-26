@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<f:view>
+    <h:head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+        <title>VBond inc.</title>
+
+<!--        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>-->
+        <h:outputScript name="js/script.js"/>
+        <h:outputScript name="js/canvas-script.js"/>
+        <h:outputScript name="js/compat.js"/>
+        <h:outputStylesheet library="styles" name="animation.css"/>
+        <h:outputStylesheet library="styles" name="style.css"/>
+        <h:outputStylesheet library="styles" name="mainContent.css"/>
+        <h:outputStylesheet library="styles" name="button.css"/>
+        <h:outputStylesheet library="styles" name="history.css"/>
+        <h:outputStylesheet library="styles" name="loading.css"/>
+<!--        <script type="text/javascript">const jspContextPath = '${pageContext.request.contextPath}';</script>-->
+    </h:head>
+    <h:body>
+    <div id="mainHeader">
+        <h:graphicImage id="mainHeaderImageLeft" value="resources/images/coder.png"/>
+        <span id="mainHeaderCodeImg">public static void main(String[] args){<br/>System.out.println(Math.random());<br/>for(int i=0; i arr.length; i++){ <br/>System.out.println("Hello World");<br/>
+        int width = 10;<br/>
+        System.err.println(width);
+        <br/>}}</span>
+        <div id="authorNameBackground"></div>
+        <pre id="authorName">Бондарь Валерий<br/>P3211</pre>
+    </div>
+    <div id="header">
+        <div class="menuButton" onmousedown="playButtonClickAnimation(); playButtonAnimation(this)">
+            <h:graphicImage value="resources/images/menu-button.png" alt="Menu"/>
+        </div>
+        <h:link outcome="#{navController.goForward()}" style="margin-left: 20px; text-decoration: none; color: black; font-family: var(--default-font)"
+                class="menuButton">НАЗАД</h:link>
+        <div id="horScreenSize" style="margin-left: 20%"></div>
+    </div>
+    <div style="position: relative;">
+        <div id="sidePanel">
+            <div id="upperSidePanel">
+                <div class="menuButton" onmousedown="playButtonClickAnimation(); playButtonAnimation(this)">
+                    <h:graphicImage value="resources/images/back-arrow.png" alt="Back"/>
+                </div>
+            </div>
+            <div id="headerSidePanel">
+                <!--Header side panel content-->
+                <h:graphicImage id="headerSideImage" value="resources/images/logo.png"/>
+            </div>
+            <div id="footerSidePanel">
+                <ol style="list-style: none">
+                    <li id="popularSideItem" class="sideItem" onmousedown="playButtonAnimation(this); mainPageBtnClick()">
+                        <h:graphicImage class="sideItemImg" value="resources/images/home-button.png"/>
+                        <span class="sideItemText">Главная страница</span>
+                    </li>
+                    <li id="newSideItem" class="sideItem" onmousedown="playButtonAnimation(this); historyBtnClick()">
+                        <h:graphicImage class="sideItemImg" value="resources/images/history.png"/>
+                        <span class="sideItemText">История</span>
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <!--Main Content-->
+    <div id="mainContent" onmousedown="mainContentClick()">
+        <table id="mainTable">
+            <tr style="display: none" id="historyView">
+                <td>
+                    <div id="history">
+
+                        <p:dataTable id="historyTable" var="point" value="#{areaChecker.userPoints}">
+                            <p:column headerText="R-радиус">
+                                <h:outputText value="#{point.r}" />
+                            </p:column>
+
+                            <p:column headerText="X-координата">
+                                <h:outputText value="#{point.x}" />
+                            </p:column>
+
+                            <p:column headerText="Y-координата">
+                                <h:outputText value="#{point.y}" />
+                            </p:column>
+
+                            <p:column headerText="Попадание">
+                                <h:outputText value="#{point.entered}" />
+                            </p:column>
+                        </p:dataTable>
+
+                        <!-- <h1>History</h1>
+                        <ol class="historyList">
+                            <li><span>x=3, y=4, R=1 (Входит)</span></li>
+                        </ol> -->
+                    </div>
+                </td>
+            </tr>
+            <tr id="mainView">
+                <td>
+                    <div id="leftSide">
+                        <h:form id="coordform" onsubmit="return false;">
+                            <div id="x-form" style="white-space: nowrap">
+                                <p>Значение X:</p>
+                                <div class="slider-container">
+                                    <h:inputHidden id="hidden-txt-x" value="#{areaChecker.x}"/>
+                                    <p:slider id="x-slider" for="hidden-txt-x" step="0.1" minValue="-4.9" maxValue="4.9"
+                                              onSlide="displaySliderValue('coordform:hidden-txt-x', 'coordform:output-txt-x')"
+                                              onSlideEnd="displaySliderValue('coordform:hidden-txt-x', 'coordform:output-txt-x')"/>
+                                </div>
+                                <h:outputText id="output-txt-x" style="width: 2em; margin-left: 5%" value="0"/>
+                            </div>
+                            <div id="ry-container">
+                                <div id="y-form">
+                                    <label for="y-input" style="white-space: nowrap">Значение Y:</label>
+
+                                    <h:inputText type="text" placeholder="(-3 ... 5)" name="y-input" id="y-input"
+                                                 maxlength="7"
+                                                 value="#{areaChecker.y}" required="true" requiredMessage="Y координата не была введена.">
+                                        <f:validator validatorId="yalidator"/>
+                                        <p:ajax update="ymsg" event="keyup"/>
+                                    </h:inputText>
+                                    <h:message for="y-input" id="ymsg" style="color: red; font-size: 15px; margin-left: 2%"/>
+                                </div>
+                                <div id="r-form">
+                                    Значение R:
+                                    <div class="slider-container">
+                                        <h:inputHidden  id="hidden-txt-r" value="#{areaChecker.r}"/>
+                                        <p:slider for="hidden-txt-r"
+                                                  onSlide="displaySliderValue('coordform:hidden-txt-r', 'coordform:output-txt-r');"
+                                                  onSlideEnd="rSliderMoved(event, ui);
+                                                  displaySliderValue('coordform:hidden-txt-r', 'coordform:output-txt-r'); redraw();"
+                                                  step="0.1" minValue="2.1" maxValue="4.9"/>
+                                    </div>
+                                    <h:outputText id="output-txt-r" style="width: 2em; margin-left: 5%" value="2.1"/>
+                                </div>
+                                <div id="submit-form">
+<!--                                    <button id="submitButton" class="button" onmousedown="submitForm()" value="Готово"/>-->
+<!--                                    <h:commandButton id="hideSubmitButton" value="ads"/>-->
+                                    <h:outputText id="hitoryJStext" value="#{areaChecker.historyJson}"
+                                                    style="display: none"/>
+                                    <p:commandButton id="submitButton" action="#{areaChecker.addPoint}"
+                                                     update="historyTable hitoryJStext ymsg"
+                                                     oncomplete="redraw()" process="coordform"
+                                                     class="button" value="Готово"/>
+
+                                </div>
+                            </div>
+                        </h:form>
+                    </div>
+                </td>
+                <td>
+                    <div id="rightSide">
+                        <div id="graph">
+                            <canvas id="task-chart"></canvas>
+                            <h:graphicImage value="resources/images/graph-3.png"/>
+                        </div>
+                        <div id="response">
+
+                        </div>
+                        <!-- <div id="response">Точка не входит в данную область!
+                            <div id="rating">
+                                <img src="images/rating-star.png" alt="Star"> 12/20
+                            </div>
+                        </div> -->
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td id="mainFooter" colspan="2">
+                    <div style="align-self: flex-end; margin-bottom: 1%">Icons made by <a href="https://www.flaticon.com/authors/google" title="Google">Google</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    </h:body>
+
+</f:view>
+</html>

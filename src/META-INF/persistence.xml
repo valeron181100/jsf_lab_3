@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
+    <persistence-unit name="jpa-persistence" transaction-type="RESOURCE_LOCAL">
+        <provider>
+            org.eclipse.persistence.jpa.PersistenceProvider
+        </provider>
+        <class>database.dao.models.ResultPoint</class>
+        <properties>
+            <property name="eclipselink.target-database" value="PostgreSQL"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://pg/studs" />
+            <property name="javax.persistence.jdbc.user" value="s264444" />
+            <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" />
+            <property name="javax.persistence.jdbc.password" value="hqz388" />
+            <property name="eclipselink.ddl-generation" value="drop-and-create-tables" />
+        </properties>
+    </persistence-unit>
+</persistence>
+
+<!--
+<properties>
+<property name="javax.persistence.jdbc.url" value="jdbc:oracle:thin:@localhost:1521:orbis" />
+<property name="javax.persistence.jdbc.user" value="s264444" />
+<property name="javax.persistence.jdbc.driver" value="oracle.jdbc.driver.OracleDriver" />
+<property name="javax.persistence.jdbc.password" value="hqz388" />
+<property name="eclipselink.ddl-generation" value="drop-and-create-tables" />
+</properties>-->
