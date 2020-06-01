@@ -25,4 +25,10 @@
         <managed-bean-class>AreaChecker</managed-bean-class>
         <managed-bean-scope>application</managed-bean-scope>
     </managed-bean>
+
+    <managed-bean>
+        <managed-bean-name>navController</managed-bean-name>
+        <managed-bean-class>NavigationController</managed-bean-class>
+        <managed-bean-scope>application</managed-bean-scope>
+    </managed-bean>
 </faces-config>
